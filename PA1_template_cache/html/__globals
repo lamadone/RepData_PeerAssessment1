@@ -1,0 +1,8 @@
+processing	date	download.file	read.csv	unzip
+meancomputation	%>%	$	activity	date	group_by	hist	library	mean	median	steps	sum	summarize	tbl_df	totsteps	with
+unnamed-chunk-2	[<-	$	$<-	as.character	as.Date	c	factor	for	if	seq_along	Sys.setlocale	weekdays
+findmissing	activity	is.na	lapply	max	sapply	sum
+imputemissing	[<-	==	$	$<-	activity	for	if	is.na	mean	seq_along
+histafterimputation	%>%	$	date	group_by	hist	mean	median	nactivity	round	steps	sum	summarize	tbl_df	totsteps	with
+unnamed-chunk-1	%>%	$	activity_tbl	aes	geom_line	ggplot	ggtitle	group_by	interval	labs	library	mean	msteps	print	steps	summarize	which.max
+unnamed-chunk-3	%>%	~	aes	facet_grid	fday	geom_line	ggplot	ggtitle	group_by	interval	labs	mean	nactivity	nmsteps	print	steps	summarize	tbl_df

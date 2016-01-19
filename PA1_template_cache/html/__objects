@@ -1,0 +1,8 @@
+processing	activity	dateDownloaded	fileURL	UnzipActivity
+meancomputation	activity_tbl	meansteps	medsteps	TotSteps
+unnamed-chunk-2	i	nactivity	wday	wend
+findmissing	nbrNA	nbrNAperCol
+imputemissing	i	impute	int	nactivity
+histafterimputation	nactivity_tbl	nmeansteps	nmedsteps	NTotSteps
+unnamed-chunk-1	graph	maxint	meansteps
+unnamed-chunk-3	graph2	nactivity_tbl	navesteps

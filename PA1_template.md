@@ -1,12 +1,8 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
-```{r setoptions,echo=TRUE}
+
+```r
 library(knitr)
 opts_chunk$set(echo=TRUE,cache=TRUE)
 options(scipen=1,digits=2)
@@ -15,21 +11,27 @@ options(scipen=1,digits=2)
 
 ## Loading and preprocessing the data
 
-```{r processing}
 
+```r
 fileURL<-"https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 dateDownloaded<-date()
 dateDownloaded
+```
+
+```
+## [1] "Tue Jan 19 17:03:15 2016"
+```
+
+```r
 download.file(fileURL,destfile="./Activity.zip",method="curl")
 UnzipActivity <- unzip("Activity.zip")
 activity <- read.csv(UnzipActivity)
-
 ```
 
 ## What is mean total number of steps taken per day?
 
-```{r meancomputation}
 
+```r
 #load the dplyr package
 library(dplyr)
 #Calculate the total number of steps taken per day
@@ -40,18 +42,22 @@ TotSteps <- activity_tbl %>%
 
 # Make a histogram of the total number of steps taken each day
 with(TotSteps,hist(totsteps,col="blue",main="Total number of steps taken each day" ,xlab ="Total number of steps"))
+```
 
+![](PA1_template_files/figure-html/meancomputation-1.png)\
+
+```r
 #Calculate and report the mean and median of the total number of steps taken per day
 meansteps <- mean(TotSteps$totsteps)
 medsteps <- median(TotSteps$totsteps)
-
 ```
 
-The mean of the total number of steps taken per day is `r meansteps` and the median is `r medsteps`.
+The mean of the total number of steps taken per day is 9354.23 and the median is 10395.
 
 ## What is the average daily activity pattern?
 
-```{r timeserie}
+
+```r
 # load ggplot2 package
 library(ggplot2)
 
@@ -65,25 +71,28 @@ graph <- ggplot(meansteps,aes(interval,msteps))+
   ggtitle("Time series of the 5-minutes interval and the average number of steps taken")+
   labs(x="interval",y="average number of steps taken")
 print(graph)
+```
 
+![](PA1_template_files/figure-html/timeserie-1.png)\
+
+```r
 maxint <- meansteps$interval[which.max(meansteps$msteps)]
 ```
-The 5-minute interval, on average across all the days in the dataset which contains the maximum number of steps is `r maxint`.
+The 5-minute interval, on average across all the days in the dataset which contains the maximum number of steps is 835.
 
 
 ## Imputing missing values
 
-```{r findmissing}
 
+```r
 # Calculate and report the total number of missing values in the dataset
 # (i.e. the total number of rows with NAs)
 nbrNAperCol <- sapply(lapply(activity,is.na),sum)
 
 nbrNA <- max(nbrNAperCol)
-
 ```
 
-The total number of missing value is `r nbrNA`.  
+The total number of missing value is 2304.  
 
 We fill in all of the missing values using the following strategy:
 
@@ -94,7 +103,8 @@ We fill in all of the missing values using the following strategy:
 
 The code used to create a new dataset that is equal to the original dataset with the missing value filled in is: 
 
-```{r imputemissing}
+
+```r
 # create a copy of the dataset 
 nactivity <- activity
 
@@ -108,7 +118,8 @@ for (i in seq_along(nactivity$steps)) {
 } 
 ```
 
-```{r histafterimputation}
+
+```r
 # Make a histogram of the total number of steps taken each day
 
 nactivity_tbl <-tbl_df(nactivity)
@@ -118,25 +129,35 @@ NTotSteps <- nactivity_tbl %>%
   summarize(totsteps=sum(steps))
 
 with(NTotSteps,hist(totsteps,col="red", main="Total number of steps taken each day" ,xlab ="Total number of steps"))
+```
 
+![](PA1_template_files/figure-html/histafterimputation-1.png)\
+
+```r
 #Calculate and report the mean and median of the total number of steps taken per day
 nmeansteps <- mean(NTotSteps$totsteps)
 nmedsteps <- median(NTotSteps$totsteps)
-
 ```
 
-The mean of the total number of steps taken per day is `r nmeansteps` and the median is `r nmedsteps`. 
+The mean of the total number of steps taken per day is 10766.19 and the median is 10766.19. 
 
 These values differ from the first estimates (with the original dataset) especially the mean. The impact of imputing missing data on the estimates of the total daily number of steps is that the mean and the median increase from their original values. 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r createfactorvar}
+
+```r
 #format de date 
 nactivity$dateconv <- as.Date(as.character(nactivity$date),"%Y-%m-%d")
 Sys.setlocale("LC_TIME", "en_US");
+```
 
+```
+## [1] "en_US"
+```
+
+```r
 #Create a new factor variable in the dataset with two levels – 
 #“weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
@@ -155,7 +176,8 @@ for (i in seq_along(nactivity$day)) {
 nactivity$fday <- factor(nactivity$fday,levels=c(1,2),labels=c("weekdays","weekends"))
 ```
 
-```{r panelplot}
+
+```r
 nactivity_tbl <-tbl_df(nactivity)
 
 navesteps <- nactivity_tbl %>%
@@ -168,4 +190,6 @@ graph2 <- ggplot(navesteps,aes(interval,nmsteps))+
   labs(x="interval",y="number of steps")
 print(graph2)
 ```
+
+![](PA1_template_files/figure-html/panelplot-1.png)\
 
